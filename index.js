@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose")
 const router = require("./src/routes/pets.routes");
 require("dotenv").config();
@@ -6,6 +7,11 @@ require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 8080;
+
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"]
+}));
 
 //? middleware
 app.use(express.json());
