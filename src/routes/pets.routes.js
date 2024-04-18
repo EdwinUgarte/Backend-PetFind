@@ -1,77 +1,31 @@
-const express = require('express');
-const req = require('express/lib/request');
-const res = require('express/lib/response');
-const petsSchema = require("../controllers/petController");
+const Router = require('express');
 
-const router = express.Router();
+const {getAll, buscarPorPadre, buscarPorRaza, buscarPorRazaDueño, crearMascota, updateMascota, deleteMascota} = require('../controllers/petController');
 
+const router = Router();
 
 //? Obtener todos los pets
-router.get('/pets', (req, res) => {
-    petsSchema.find()
-    .then((data) => res.json(data))
-    .catch(error => res.json({message: error}))
-})
+router.get('/pets', getAll);
 
 //? Buscar por padre
-router.get('/padre/:padre', (req, res) => {
-    const {padre} = req.params;
-    petsSchema.find().where('padre').equals(padre.toLowerCase())
-    .then(data => res.json(data))
-    .catch(error => res.json(error))
-})
+router.get('/padre/:padre',  buscarPorPadre);
 
 //? Buscar por raza
-router.get('/pets/raza/:raza', (req, res) => {
-    const {raza} = req.params;
-    petsSchema.find({raza: raza.toLowerCase()})
-    .then(data => res.json(data))
-    .catch(error => res.json(error))
-})
+router.get('/pets/raza/:raza', buscarPorRaza);
 
 //? Buscar por raza y dueño
-router.get('/pets/:padre/:raza', (req, res) => {
-    const {padre, raza} = req.params;
-    // petsSchema.find().where('padre').equals(padre)
-    petsSchema.find({$and: [{ padre: padre.toLowerCase()} , { raza: raza.toLowerCase() }]})
-    .then(data => res.json(data))
-    .catch(error => res.json(error))
-})
+router.get('/pets/:padre/:raza', buscarPorRazaDueño);
 
 //? Create mascota
-router.post('/pets', (req, res) => {
-
-    const pet = petsSchema(req.body);
-    pet.padre = pet.padre.toLowerCase();
-    pet.raza = pet.raza.toLowerCase();
-    pet.save()
-    .then(data => {res.json(data);
-       console.log("Guardado con exito");
-    })
-    .catch(error => res.json({menssage: error}));
-})
-
+router.post('/pets', crearMascota);
 
 
 //? Actualizar mascota
-router.put('/pets/:id', (req, res) => {
-    const {id} = req.params;
-    const {name, padre, edad, foto, telefono, direccion} = req.body;
-    petsSchema.updateOne({_id: id}, { $set: {name, padre, edad, foto, telefono, direccion}} )
-    .then(data => {res.json(data)})
-    .catch(error => res.json({menssage: error}));
-})
+router.put('/pets/:id', updateMascota);
 
 
 //? Eliminar mascota
-router.delete('/pets/:id', (req, res) => {
-    const {id} = req.params;
-    petsSchema.deleteOne({_id: id})
-    .then(data => {res.json(data)})
-    .catch(error => res.json({menssage: error}));
-
-
-})
+router.delete('/pets/:id', deleteMascota);
 
 
 
