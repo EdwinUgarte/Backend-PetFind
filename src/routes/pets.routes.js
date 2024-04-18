@@ -1,7 +1,7 @@
 const express = require('express');
 const req = require('express/lib/request');
 const res = require('express/lib/response');
-const petsSchema = require("../models/pet");
+const petsSchema = require("../controllers/petController");
 
 const router = express.Router();
 
