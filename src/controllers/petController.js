@@ -30,6 +30,16 @@ const buscarPorRaza = async(req, res) => {
     }
 };
 
+const buscarPorId = async(req, res) => {
+    const {id} = req.params;
+    try {
+          let mascota =  await petModel.findById(id);
+          res.status(200).send({mascota});
+    } catch (error) {
+        res.status(500).send({message: "Error al encontrar las mascotas"})    
+    }
+};
+
 const buscarPorRazaDueño = async (req, res) => {
     const {padre, raza} = req.params;
     // petModel.find().where('padre').equals(padre)
@@ -85,6 +95,7 @@ module.exports = {
     buscarPorRazaDueño,
     crearMascota,
     updateMascota,
-    deleteMascota
+    deleteMascota,
+    buscarPorId
 }
 

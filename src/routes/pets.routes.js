@@ -1,11 +1,14 @@
 const Router = require('express');
 
-const {getAll, buscarPorPadre, buscarPorRaza, buscarPorRazaDueño, crearMascota, updateMascota, deleteMascota} = require('../controllers/petController');
+const {getAll, buscarPorPadre, buscarPorRaza, buscarPorRazaDueño, crearMascota, updateMascota, deleteMascota, buscarPorId} = require('../controllers/petController');
 
 const router = Router();
 
 //? Obtener todos los pets
 router.get('/pets', getAll);
+
+//? Buscar por id
+router.get('/pets/:id',  buscarPorId);
 
 //? Buscar por padre
 router.get('/padre/:padre',  buscarPorPadre);
